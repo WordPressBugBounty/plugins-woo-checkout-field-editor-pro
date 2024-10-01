@@ -402,7 +402,7 @@ class THWCFD_Utils {
 				$text = __($text, 'woocommerce');
 			}
 		}
-		echo $text;
+		echo esc_html($text);
 	}
 	/***********************************
 	 ----- i18n functions - END ------
@@ -427,6 +427,43 @@ class THWCFD_Utils {
 				error_log( $log );
 			}
 		}
+	}
+
+	public static function get_allowed_html(){
+		$allowed_html = array(
+			'input' => array(
+				'type' => array(),
+				'id' => array(),
+				'name' => array(),
+				'value' => array(),
+				'style' => array(),
+				'checked' => array(),
+				'class' => array(), 
+			),
+			'label' => array(
+				'for' => array(),
+				'style' => array(),
+			),
+			'textarea' => array(
+				'name' => array(),
+				'rows' => array(),
+				'cols' => array(),
+				'style' => array(), 
+			),
+			'select' => array(
+				'name' => array(),
+				'style' => array(),
+				'class' => array(),
+				'onchange' => array(),
+				'multiple' => array(),
+				'style' => array(),
+        		'placeholder' => array(),
+			),
+			'option' => array(
+				'value' => array(),
+			),
+		);
+		return $allowed_html;
 	}
 }
 

@@ -89,7 +89,7 @@ class THWCFD_Admin {
 	
 	public function output_settings(){
 		echo '<div class="wrap">';
-		echo '<h2>'. __('Checkout Form', 'woo-checkout-field-editor-pro') .'</h2>';
+		echo '<h2>'. esc_html__('Checkout Form', 'woo-checkout-field-editor-pro') .'</h2>';
 
 		$tab = $this->get_current_tab();
 
@@ -116,7 +116,7 @@ class THWCFD_Admin {
 			return;
 		}
 
-		$nonse = isset($_GET['thwcfd_review_nonce']) ? $_GET['thwcfd_review_nonce'] : false;
+		$nonse = isset($_GET['thwcfd_review_nonce']) ? sanitize_text_field( wp_unslash($_GET['thwcfd_review_nonce'])) : false;
 		$capability = THWCFD_Utils::wcfd_capability();
 
 		if(!wp_verify_nonce($nonse, 'thwcfd_notice_security') || !current_user_can($capability)){
@@ -428,7 +428,7 @@ class THWCFD_Admin {
 		$dismiss_url = add_query_arg(array('thwcfd_dissmis' => true, 'thwcfd_review_nonce' => wp_create_nonce( 'thwcfd_notice_security')));
 		$reviewed_url= add_query_arg(array('thwcfd_reviewed' => true, 'thwcfd_review_nonce' => wp_create_nonce( 'thwcfd_notice_security')));
 		?>
-		<div class="notice notice-info thpladmin-notice thwcfd-review-wrapper "  data-nonce="<?php echo wp_create_nonce( 'thwcfd_notice_security'); ?>">
+		<div class="notice notice-info thpladmin-notice thwcfd-review-wrapper "  data-nonce="<?php echo esc_attr(wp_create_nonce( 'thwcfd_notice_security')); ?>">
       	   <div class="thwcfd-custom-background thwcfd-content">
        		<img src="<?php echo esc_url(THWCFD_URL .'admin/assets/images/logo.svg'); ?>" alt="Themehigh Logo" class="thwcfd-themehigh-logo" />
         	<div class="thwcfd-greeting-container">
@@ -456,7 +456,7 @@ class THWCFD_Admin {
           		</div>
         	</div>
         	<div class="thwcfd-buttons action-row">
-				<a class="thwcfd-notice-action thwcfd-yes" onclick="window.open('https://wordpress.org/support/plugin/woo-checkout-field-editor-pro/reviews/?rate=5#new-post', '_blank')">
+			<a class="thwcfd-notice-action thwcfd-yes" onclick="window.open('<?php echo esc_url( 'https://wordpress.org/support/plugin/woo-checkout-field-editor-pro/reviews/?rate=5#new-post' ); ?>', '_blank')">
           			Yes, Today
 				</a>
 				<a class="thwcfd-notice-action thwcfd-remind" href="<?php echo esc_url($remind_url); ?>" >
@@ -473,7 +473,7 @@ class THWCFD_Admin {
           		<h1>Checkout field editor by <span>themehigh</span></h1>
         	</div>
         	<div class="thwcfd-close">
-          		<a href="<?php echo $dismiss_url; ?>"><img src="<?php echo esc_url(THWCFD_URL .'admin/assets/images/close.png'); ?>" alt="Close" /></a>
+          		<a href="<?php echo esc_url($dismiss_url); ?>"><img src="<?php echo esc_url(THWCFD_URL .'admin/assets/images/close.png'); ?>" alt="Close" /></a>
         	</div>
 			
       	   </div>
@@ -483,7 +483,7 @@ class THWCFD_Admin {
 	}
 
 	public function thwcfd_discount_popup_actions() {
-		$nonce = isset($_GET['thwcfd_discount_popup_nonce']) ? $_GET['thwcfd_discount_popup_nonce'] : false;
+		$nonce = isset($_GET['thwcfd_discount_popup_nonce']) ? sanitize_text_field( wp_unslash($_GET['thwcfd_discount_popup_nonce'])) : false;
 		if(!wp_verify_nonce($nonce, 'thwcfd_discount_popup_security')){
 			die();
 		}
@@ -522,7 +522,7 @@ class THWCFD_Admin {
 
 		$url = "https://www.themehigh.com/?edd_action=add_to_cart&download_id=12&cp=lyCDSy&utm_source=free&utm_medium=premium_tab&utm_campaign=wcfe_upgrade_link";
 
-		$current_page = isset( $_GET['page'] ) ? $_GET['page']  : '';
+		$current_page = isset( $_GET['page'] ) ? sanitize_text_field( wp_unslash($_GET['page']))  : '';
 		
 		if($current_page !== 'checkout_form_designer'){
 			return;

@@ -610,18 +610,17 @@ class THWCFD_Public_Checkout {
 						if($f_type == 'textarea'){
 							$value =  nl2br($value);
 						}
-						
 						if(is_account_page()){
 							if(apply_filters( 'thwcfd_view_order_customer_details_table_view', true )){
-								$fields_html .= '<tr><th>'. $label .':</th><td>'. $value .'</td></tr>';
+								$fields_html .= '<tr><th>'. esc_html($label) .':</th><td>'. esc_html($value) .'</td></tr>';
 							}else{
 								$fields_html .= '<br/><dt>'. $label .':</dt><dd>'. $value .'</dd>';
 							}
 						}else{
 							if(apply_filters( 'thwcfd_thankyou_customer_details_table_view', true )){
-								$fields_html .= '<tr><th>'. $label .':</th><td>'. $value .'</td></tr>';
+								$fields_html .= '<tr><th>'. esc_html($label) .':</th><td>'. esc_html($value) .'</td></tr>';
 							}else{
-								$fields_html .= '<br/><dt>'. $label .':</dt><dd>'. $value .'</dd>';
+								$fields_html .= '<br/><dt>'. esc_html($label) .':</dt><dd>'. esc_html($value) .'</dd>';
 							}
 						}
 					}
@@ -633,7 +632,7 @@ class THWCFD_Public_Checkout {
 				?>
 				<table class="woocommerce-table woocommerce-table--custom-fields shop_table custom-fields">
 					<?php
-						echo $fields_html;
+						echo wp_kses_post($fields_html);
 					?>
 				</table>
 				<?php

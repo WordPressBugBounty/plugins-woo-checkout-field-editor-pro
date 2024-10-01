@@ -52,7 +52,7 @@ abstract class THWCFD_Admin_Settings{
 		foreach( $tabs as $id => $label ){
 			$active = ( $current_tab == $id ) ? 'nav-tab-active' : '';
 			//$label  = esc_html__($label, 'woo-checkout-field-editor-pro');
-			echo '<a class="nav-tab '.$active.'" href="'. esc_url($this->get_admin_url($id)) .'">'.$label.'</a>';
+			echo '<a class="nav-tab '.esc_attr($active).'" href="'. esc_url($this->get_admin_url($id)) .'">'.esc_html($label).'</a>';
 		}
 		echo '</h2>';		
 	}
@@ -88,11 +88,16 @@ abstract class THWCFD_Admin_Settings{
 	}
 
 	public function print_notices($msg, $type='updated', $return=false){
-		$notice = '<div class="thwcfd-notice '. $type .'"><p>'. $msg .'</p></div>';
-		if(!$return){
-			echo $notice;
-		}
-		return $notice;
+
+		// $notice = '<div class="thwcfd-notice '. $type .'"><p>'. $msg .'</p></div>';
+		// if(!$return){
+		// 	echo $notice;
+		// }
+		// return $notice;
+		?>
+		<div class="thwcfd-notice <?php echo esc_attr($type); ?>"><p><?php echo esc_html($msg); ?></p></div>
+		<?php
+		
 	}
 	
    /*******************************************
@@ -121,17 +126,18 @@ abstract class THWCFD_Admin_Settings{
 	
 	public function render_form_element_h_separator($padding = 5, $colspan = 6){
 		?>
-        <tr><td colspan="<?php echo $colspan; ?>" style="border-bottom: 1px dashed #e6e6e6; padding-top: <?php echo $padding ?>px;"></td></tr>
+        <tr><td colspan="<?php echo esc_attr($colspan); ?>" style="border-bottom: 1px dashed #e6e6e6; padding-top: <?php echo esc_attr($padding) ?>px;"></td></tr>
         <?php
 	}
 	
 	public function render_form_element_h_spacing($padding = 5, $colspan = 6){
 		?>
-        <tr><td colspan="<?php echo $colspan; ?>" style="padding-top:<?php echo $padding ?>px;"></td></tr>
+        <tr><td colspan="<?php echo esc_attr($colspan); ?>" style="padding-top:<?php echo esc_attr($padding) ?>px;"></td></tr>
         <?php
 	}
 	
 	public function render_form_field_element($field, $atts = array(), $render_cell = true){
+		
 		if($field && is_array($field)){
 			$args = shortcode_atts( array(
 				'label_cell_props' => '',
@@ -163,22 +169,21 @@ abstract class THWCFD_Admin_Settings{
 				
 				$label_cell_props = !empty($args['label_cell_props']) ? $args['label_cell_props'] : '';
 				$input_cell_props = !empty($args['input_cell_props']) ? $args['input_cell_props'] : '';
-				
 				?>
-				<td <?php echo $label_cell_props ?> >
-					<?php echo $flabel; echo $required_html; 
+				<td <?php echo wp_kses($label_cell_props, array('class' => true)) ?> >
+					<?php echo esc_html($flabel); echo wp_kses($required_html, array('abbr' => true)); 
 					if($sub_label){
 						?>
-						<br/><span class="thpladmin-subtitle"><?php echo $sub_label; ?></span>
+						<br/><span class="thpladmin-subtitle"><?php echo esc_html($sub_label); ?></span>
 						<?php
 					}
 					?>
 				</td>
 				<?php $this->render_form_element_tooltip($tooltip); ?>
-				<td <?php echo $input_cell_props ?> ><?php echo $field_html; ?></td>
+				<td <?php echo wp_kses($input_cell_props, array('class' => true)) ?> ><?php echo wp_kses($field_html, THWCFD_Utils::get_allowed_html()); ?></td>
 				<?php
 			}else{
-				echo $field_html;
+				echo wp_kses($field_html, THWCFD_Utils::get_allowed_html());
 			}
 		}
 	}
@@ -212,7 +217,7 @@ abstract class THWCFD_Admin_Settings{
 		$field_html = '';
 		if($field && is_array($field)){
 			$field_props = $this->prepare_form_field_props($field, $atts);
-			$field_html = '<input type="text" '. $field_props .' />';
+			$field_html = '<input type="text" '. wp_kses_post($field_props) .' />';
 		}
 		return $field_html;
 	}
@@ -227,12 +232,13 @@ abstract class THWCFD_Admin_Settings{
 		
 			$fvalue = isset($field['value']) ? $field['value'] : '';
 			$field_props = $this->prepare_form_field_props($field, $atts);
-			$field_html = '<textarea '. $field_props .' rows="'.$args['rows'].'" cols="'.$args['cols'].'" >'.$fvalue.'</textarea>';
+			$field_html = '<textarea '. wp_kses_post($field_props) .' rows="'.esc_attr($args['rows']).'" cols="'.esc_attr($args['cols']).'" >'.esc_html($fvalue).'</textarea>';
 		}
 		return $field_html;
 	}
 
 	private function render_form_field_element_checkbox($field, $atts = array(), $render_cell = true){
+		
 		$field_html = '';
 		if($field && is_array($field)){
 			$args = shortcode_atts( array(
@@ -247,13 +253,13 @@ abstract class THWCFD_Admin_Settings{
 			$field_props  = $this->prepare_form_field_props($field, $atts);
 			$field_props .= isset($field['checked']) && $field['checked'] === 1 ? ' checked' : '';
 			
-			$field_html  = '<input type="checkbox" id="'. $fid .'" '. $field_props .' />';
-			$field_html .= '<label for="'. $fid .'" '. $args['label_props'] .' > '. $flabel .'</label>';
+			$field_html  = '<input type="checkbox" id="'. esc_attr($fid) .'" '. wp_kses_post($field_props) .' />';
+			$field_html .= '<label for="'. esc_attr($fid) .'" '. wp_kses_post($args['label_props']) .' > '. esc_html($flabel) .'</label>';
 		}
 		if(!$render_cell && $args['render_input_cell']){
-			return '<td '. $args['cell_props'] .' >'. $field_html .'</td>';
+			return '<td '. wp_kses_post($args['cell_props']) .' >'. wp_kses($field_html, THWCFD_Utils::get_allowed_html()) .'</td>';
 		}else{
-			return $field_html;
+			return wp_kses($field_html,THWCFD_Utils::get_allowed_html());
 		}
 	}
    /*******************************************

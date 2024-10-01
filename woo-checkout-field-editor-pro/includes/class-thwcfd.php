@@ -137,17 +137,17 @@ class THWCFD {
                         <div class="modal-body">
                             <div class="model-header">
                                 <img class="th-logo" src="<?php echo esc_url(THWCFD_URL .'admin/assets/images/min-logo.svg'); ?>" alt="themehigh-logo">
-                                <span><?php echo __('Quick Feedback', 'woo-checkout-field-editor-pro'); ?></span>
+                                <span><?php esc_html_e('Quick Feedback', 'woo-checkout-field-editor-pro'); ?></span>
                             </div>
 
                             <!-- <div class="get-support-version-b">
                                 <p>We are sad to see you go. We would be happy to fix things for you. Please raise a ticket to get help</p>
-                                <a class="thwcfd-link thwcfd-right-link thwcfd-active" target="_blank" href="https://help.themehigh.com/hc/en-us/requests/new?utm_source=wcfe_free&utm_medium=feedback_form&utm_campaign=get_support"><?php echo __('Get Support', 'woo-checkout-field-editor-pro'); ?></a>
+                                <a class="thwcfd-link thwcfd-right-link thwcfd-active" target="_blank" href="https://help.themehigh.com/hc/en-us/requests/new?utm_source=wcfe_free&utm_medium=feedback_form&utm_campaign=get_support"><?php esc_html_e('Get Support', 'woo-checkout-field-editor-pro'); ?></a>
                             </div> -->
 
                             <main class="form-container main-full">
-                                <p class="thwcfd-title-text"><?php echo __('If you have a moment, please let us know why you want to deactivate this plugin', 'woo-checkout-field-editor-pro'); ?></p>
-                                <ul class="deactivation-reason" data-nonce="<?php echo wp_create_nonce('thwcfd_deactivate_nonce'); ?>">
+                                <p class="thwcfd-title-text"><?php esc_html_e('If you have a moment, please let us know why you want to deactivate this plugin', 'woo-checkout-field-editor-pro'); ?></p>
+                                <ul class="deactivation-reason" data-nonce="<?php esc_attr( wp_create_nonce('thwcfd_deactivate_nonce')); ?>">
                                     <?php 
                                     if($deactivation_reasons){
                                         foreach($deactivation_reasons as $key => $reason){
@@ -165,18 +165,18 @@ class THWCFD {
                                     }
                                     ?>
                                 </ul>
-                                <p class="thwcfd-privacy-cnt"><?php echo __('This form is only for getting your valuable feedback. We do not collect your personal data. To know more read our ', 'woo-checkout-field-editor-pro'); ?> <a class="thwcfd-privacy-link" target="_blank" href="<?php echo esc_url('https://www.themehigh.com/privacy-policy/');?>"><?php echo __('Privacy Policy', 'woo-checkout-field-editor-pro'); ?></a></p>
+                                <p class="thwcfd-privacy-cnt"><?php esc_html_e('This form is only for getting your valuable feedback. We do not collect your personal data. To know more read our ', 'woo-checkout-field-editor-pro'); ?> <a class="thwcfd-privacy-link" target="_blank" href="<?php echo esc_url('https://www.themehigh.com/privacy-policy/');?>"><?php esc_html_e('Privacy Policy', 'woo-checkout-field-editor-pro'); ?></a></p>
                             </main>
                             <footer class="modal-footer">
                                 <div class="thwcfd-left">
-                                    <a class="thwcfd-link thwcfd-left-link thwcfd-deactivate" href="#"><?php echo __('Skip & Deactivate', 'woo-checkout-field-editor-pro'); ?></a>
+                                    <a class="thwcfd-link thwcfd-left-link thwcfd-deactivate" href="#"><?php esc_html_e('Skip & Deactivate', 'woo-checkout-field-editor-pro'); ?></a>
                                 </div>
                                 <div class="thwcfd-right">
                                     
-                                    <a class="thwcfd-link thwcfd-right-link thwcfd-active" target="_blank" href="https://help.themehigh.com/hc/en-us/requests/new?utm_source=wcfe_free&utm_medium=feedback_form&utm_campaign=get_support"><?php echo __('Get Support', 'woo-checkout-field-editor-pro'); ?></a>
+                                    <a class="thwcfd-link thwcfd-right-link thwcfd-active" target="_blank" href="https://help.themehigh.com/hc/en-us/requests/new?utm_source=wcfe_free&utm_medium=feedback_form&utm_campaign=get_support"><?php esc_html_e('Get Support', 'woo-checkout-field-editor-pro'); ?></a>
 
-                                    <a class="thwcfd-link thwcfd-right-link thwcfd-active thwcfd-submit-deactivate" href="#"><?php echo __('Submit and Deactivate', 'woo-checkout-field-editor-pro'); ?></a>
-                                    <a class="thwcfd-link thwcfd-right-link thwcfd-close" href="#"><?php echo __('Cancel', 'woo-checkout-field-editor-pro'); ?></a>
+                                    <a class="thwcfd-link thwcfd-right-link thwcfd-active thwcfd-submit-deactivate" href="#"><?php esc_html_e('Submit and Deactivate', 'woo-checkout-field-editor-pro'); ?></a>
+                                    <a class="thwcfd-link thwcfd-right-link thwcfd-close" href="#"><?php esc_html_e('Cancel', 'woo-checkout-field-editor-pro'); ?></a>
                                 </div>
                             </footer>
                         </div>
@@ -387,23 +387,23 @@ class THWCFD {
                         reason_input += '<input type="checkbox" id="th-snooze" name="th-snooze" class="th-snooze-checkbox">';
                         reason_input += '<label for="th-snooze">Snooze this panel while troubleshooting</label>';
                         reason_input += '<select name="th-snooze-time" class="th-snooze-select" disabled>';
-                        reason_input += '<option value="<?php echo HOUR_IN_SECONDS ?>">1 Hour</option>';
-                        reason_input += '<option value="<?php echo 12*HOUR_IN_SECONDS ?>">12 Hour</option>';
-                        reason_input += '<option value="<?php echo DAY_IN_SECONDS ?>">24 Hour</option>';
-                        reason_input += '<option value="<?php echo WEEK_IN_SECONDS ?>">1 Week</option>';
-                        reason_input += '<option value="<?php echo MONTH_IN_SECONDS ?>">1 Month</option>';
+                        reason_input += '<option value="' . esc_attr(HOUR_IN_SECONDS) . '">1 Hour</option>';
+                        reason_input += '<option value="' . esc_attr(12 * HOUR_IN_SECONDS) . '">12 Hour</option>';
+                        reason_input += '<option value="' . esc_attr(DAY_IN_SECONDS) . '">24 Hour</option>';
+                        reason_input += '<option value="' . esc_attr(WEEK_IN_SECONDS) . '">1 Week</option>';
+                        reason_input += '<option value="' . esc_attr(MONTH_IN_SECONDS) . '">1 Month</option>';
                         reason_input += '</select>';
                         reason_input += '</div>';
                     }else if('reviewlink' == type){
                         reason_input += '<div class="reason-input wcfe-review-link">';
                         /*
-                        reason_input += '<?php _e('Deactivate and ', 'woo-checkout-field-editor-pro');?>'
+                        reason_input += '<?php esc_html_e('Deactivate and ', 'woo-checkout-field-editor-pro');?>'
                         reason_input += '<a href="#" target="_blank" class="thwcfd-review-and-deactivate">';
-                        reason_input += '<?php _e('leave a review', 'woo-checkout-field-editor-pro'); ?>';
+                        reason_input += '<?php esc_html_e('leave a review', 'woo-checkout-field-editor-pro'); ?>';
                         reason_input += '<span class="wcfe-rating-link"> &#9733;&#9733;&#9733;&#9733;&#9733; </span>';
                         reason_input += '</a>';
                         */
-                        reason_input += '<input type="hidden" value="<?php _e('Upgraded', 'woo-checkout-field-editor-pro');?>">';
+                        reason_input += '<input type="hidden" value="<?php esc_html_e('Upgraded', 'woo-checkout-field-editor-pro');?>">';
                         reason_input += '</div>';
                     }
 
@@ -540,7 +540,7 @@ class THWCFD {
 
         if($_POST['reason'] === 'temporary'){
 
-            $snooze_period = isset($_POST['th-snooze-time']) && $_POST['th-snooze-time'] ? $_POST['th-snooze-time'] : MINUTE_IN_SECONDS ;
+            $snooze_period = isset($_POST['th-snooze-time']) && $_POST['th-snooze-time'] ? absint($_POST['th-snooze-time']) : MINUTE_IN_SECONDS ;
             $time_now = time();
             $snooze_time = $time_now + $snooze_period;
 
@@ -551,10 +551,10 @@ class THWCFD {
         
         $data = array(
             'plugin'        => 'wcfe',
-            'reason'        => sanitize_text_field($_POST['reason']),
+            'reason'        => sanitize_text_field(wp_unslash($_POST['reason'])),
             'comments'      => isset($_POST['comments']) ? sanitize_textarea_field(wp_unslash($_POST['comments'])) : '',
             'date'          => gmdate("M d, Y h:i:s A"),
-            'software'      => $_SERVER['SERVER_SOFTWARE'],
+            'software'      => isset($_SERVER['SERVER_SOFTWARE']) ? sanitize_text_field(wp_unslash($_SERVER['SERVER_SOFTWARE'])) : '',
             'php_version'   => phpversion(),
             'mysql_version' => $wpdb->db_version(),
             'wp_version'    => get_bloginfo('version'),
