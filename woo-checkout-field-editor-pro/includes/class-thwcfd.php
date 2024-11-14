@@ -25,12 +25,15 @@ class THWCFD {
 		}
 		$this->plugin_name = 'woo-checkout-field-editor-pro';
 
-		$this->load_dependencies();
+		add_action('init', array($this, 'init'));
+	}
+
+    public function init(){
+		$this->define_constants();
+        $this->load_dependencies();
 		$this->set_locale();
 		$this->define_admin_hooks();
 		$this->define_public_hooks();
-
-		add_action('init', array($this, 'init'));
 	}
 
 	private function load_dependencies() {
@@ -87,14 +90,10 @@ class THWCFD {
 		//if(!is_admin() || (defined( 'DOING_AJAX' ) && DOING_AJAX)){
 			$plugin_checkout = new THWCFD_Public_Checkout( $this->get_plugin_name(), $this->get_version() );
 			add_action('wp_enqueue_scripts', array($plugin_checkout, 'enqueue_styles_and_scripts'));
-			add_action('after_setup_theme', array($plugin_checkout, 'define_public_hooks'));
+			add_action('init', array($plugin_checkout, 'define_public_hooks'),20);
 		//}
 	}
 
-	public function init(){
-		$this->define_constants();
-	}
-	
 	private function define_constants(){
 		!defined('THWCFD_ASSETS_URL_ADMIN') && define('THWCFD_ASSETS_URL_ADMIN', THWCFD_URL . 'admin/assets/');
 		!defined('THWCFD_ASSETS_URL_PUBLIC') && define('THWCFD_ASSETS_URL_PUBLIC', THWCFD_URL . 'public/assets/');

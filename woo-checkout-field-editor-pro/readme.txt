@@ -3,9 +3,9 @@ Contributors: ThemeHigh
 Donate link: https://themehigh.com/
 Tags: Checkout  Manager, Checkout Field Editor, WooCommerce Checkout, WooCommerce Checkout Field, WooCommerce Checkout Addons
 Requires at least: 4.9
-Tested up to: 6.6
+Tested up to: 6.7
 Requires PHP: 5.6
-Stable tag: 2.0.4
+Stable tag: 2.0.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -285,6 +285,7 @@ Yes. There is a button 'reset to default fields' to go back to the WooCommerce d
 9. Locale override settings
 
 == Changelog ==
-= 2.0.4 =
-* Added WooCommerce 9.3 compatibility.
-* Fixed the vulnerability issues.
+= 2.0.5 =
+* Added WordPress 6.7 compatibility.
+* Added WooCommerce 9.4 compatibility.
+* Added new filter for remove object cache - (thwcfe_disable_settings_cache).

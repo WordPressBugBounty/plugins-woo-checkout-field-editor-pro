@@ -268,6 +268,12 @@ class THWCFD_Admin_Settings_Advanced extends THWCFD_Admin_Settings{
 
 			// $settings = unserialize($base64_decoded, ['allowed_classes' => false]);
 			$settings = json_decode($base64_decoded,true);
+			// Clear cache if necessary
+			if (apply_filters('thwcfe_disable_settings_cache', false)) {
+				wp_cache_delete(THWCFD_Utils::OPTION_KEY_BILLING_FIELDS, 'options');
+				wp_cache_delete(THWCFD_Utils::OPTION_KEY_SHIPPING_FIELDS, 'options');
+				wp_cache_delete(THWCFD_Utils::OPTION_KEY_ADDITIONAL_FIELDS, 'options');
+			}
 
 			if($settings){
 				foreach($settings as $key => $value){
