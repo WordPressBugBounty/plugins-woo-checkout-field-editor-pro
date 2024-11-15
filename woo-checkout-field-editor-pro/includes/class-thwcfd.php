@@ -83,7 +83,7 @@ class THWCFD {
 		add_action('wp_ajax_th_activate_plugin', array($themehigh_plugins, 'activate_themehigh_plugins'));
 
 		$general_settings = new THWCFD_Admin_Settings_General();
-		add_action('after_setup_theme', array($general_settings, 'define_admin_hooks'));
+		add_action('init', array($general_settings, 'define_admin_hooks'),20);
 	}
 
 	private function define_public_hooks() {

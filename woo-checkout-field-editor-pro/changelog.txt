@@ -1,4 +1,7 @@
 == Changelog ==
+= 2.0.6 =
+* Fixed an issue where certain fields were not displaying on the order details page.
+
 = 2.0.5 =
 * Added WordPress 6.7 compatibility.
 * Added WooCommerce 9.4 compatibility.

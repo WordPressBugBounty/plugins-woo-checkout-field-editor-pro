@@ -5,7 +5,7 @@ Tags: Checkout  Manager, Checkout Field Editor, WooCommerce Checkout, WooCommerc
 Requires at least: 4.9
 Tested up to: 6.7
 Requires PHP: 5.6
-Stable tag: 2.0.5
+Stable tag: 2.0.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -285,6 +285,9 @@ Yes. There is a button 'reset to default fields' to go back to the WooCommerce d
 9. Locale override settings
 
 == Changelog ==
+= 2.0.6 =
+* Fixed an issue where certain fields were not displaying on the order details page.
+
 = 2.0.5 =
 * Added WordPress 6.7 compatibility.
 * Added WooCommerce 9.4 compatibility.
