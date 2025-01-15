@@ -5,7 +5,7 @@ Tags: Checkout  Manager, Checkout Field Editor, WooCommerce Checkout, WooCommerc
 Requires at least: 4.9
 Tested up to: 6.7
 Requires PHP: 5.6
-Stable tag: 2.1.0
+Stable tag: 2.1.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -288,6 +288,9 @@ Yes. There is a button 'reset to default fields' to go back to the WooCommerce d
 9. Locale override settings
 
 == Changelog ==
+= 2.1.1 =
+* Added WooCommerce backward compatibility for versions below 8.7.
+
 = 2.1.0 =
 * Added options to add additional sections and custom checkout fields in the checkout block.
 * Added email,phone and url custom validations.

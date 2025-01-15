@@ -32,15 +32,19 @@ class THWCFD_Block {
 	******** Address Section Functionality - START ******
 	***************************************************/
     public function load_address_blocks(){
-       
+        
+        if(version_compare(THWCFD_Utils::get_wc_version(), '8.8.0', "<")){
+            return;
+        }   
         $this->register_additional_address_fields();
         //add_filter('woocommerce_shared_settings', array($this, 'update_default_fields_data'), 999);
         add_action('woocommerce_blocks_checkout_block_registration', array($this, 'update_default_fields_data_with_block'), 999);
         add_action('woocommerce_validate_additional_field', array($this, 'validate_additional_field'), 10, 3);
         if($this->has_block_checkout()){
             add_filter('woocommerce_default_address_fields', array($this, 'update_default_fields_data'), 999);
-        } 
+        }  
     }
+
     private function has_block_checkout() {
         $checkout_page_id = wc_get_page_id( 'checkout' );
         $has_block_checkout = $checkout_page_id && has_block( 'woocommerce/checkout', $checkout_page_id );
@@ -221,6 +225,10 @@ class THWCFD_Block {
 
     public function define_block_hooks(){
        
+        if(version_compare(THWCFD_Utils::get_wc_version(), '8.8.0', "<")){
+            return;
+        } 
+
         add_action('woocommerce_blocks_checkout_block_registration' , array($this, 'register_block_integration'));
         THWCFD_Block_Extend_Store_Endpoint::init();
         add_action('woocommerce_store_api_checkout_update_order_from_request', array($this, 'store_api_checkout_update_order_from_request'),10,2);
