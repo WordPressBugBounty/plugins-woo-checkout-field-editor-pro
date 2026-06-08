@@ -171,6 +171,10 @@ class THWCFD_Block_Order_Data {
 	}
 
     private function prepare_order_meta_fields_for_email($ofields, $sent_to_admin, $order){
+		if(!is_array($ofields)){
+			$ofields = array();
+		}
+
 		$custom_fields = array();
 		$args          = $this->prepare_args_order_email($sent_to_admin);
 		$sections      = $this->get_order_meta_sections($order, self::VIEW_ORDER_EMAIL, $args);
@@ -610,7 +614,10 @@ class THWCFD_Block_Order_Data {
 			$fields     = $section->fields;
             foreach($fields as $field_key => $field){
                 if($this->is_show_field($field, $context, $args)){
-                    $field_value = isset($section_field_values[$field_key]) ? $section_field_values[$field_key] : '';
+                    if(!is_array($section_field_values) || !array_key_exists($field_key, $section_field_values)){
+                        continue;
+                    }
+                    $field_value = $section_field_values[$field_key];
                     $field_value = apply_filters('thwcfe_order_meta_field_value', $field_value, $field_key, $order, $context);
                     $field->value = $field_value;
                     $order_meta_fields[$field_key] = $field;

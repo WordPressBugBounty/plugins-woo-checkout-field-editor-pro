@@ -3,9 +3,9 @@ Contributors: ThemeHigh
 Donate link: https://themehigh.com/
 Tags: Checkout  Manager, Checkout Field Editor, WooCommerce Checkout, WooCommerce Checkout Field, Custom fields
 Requires at least: 4.9
-Tested up to: 6.9
+Tested up to: 7.0
 Requires PHP: 5.6
-Stable tag: 2.1.8
+Stable tag: 2.1.9
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -346,6 +346,11 @@ No, the free version does not support this feature. However, with the pro versio
 12. Block checkout custom fields( Radio and Text)
 
 == Changelog ==
+= 2.1.9 =
+* Added new Block Checkout field types: **Number, URL, Email, Paragraph, Textarea, and Heading** .
+* Added WooCommerce 10.8 compatibility.
+* Added WordPress 7.0 compatibility.
+
 = 2.1.8 =
 * Security: Fixed a Stored XSS vulnerability affecting custom  fields submitted through the WooCommerce Store API checkout endpoint reported by Dmitrii Ignatyev.
 * Added WooCommerce 10.5 compatibility.
@@ -393,3 +398,5 @@ No, the free version does not support this feature. However, with the pro versio
 * Added WordPress 6.7 compatibility.
 * Added WooCommerce 9.4 compatibility.
 * Added new filter for remove object cache - (thwcfe_disable_settings_cache).
+
+[See full changelog](https://plugins.svn.wordpress.org/woo-checkout-field-editor-pro/trunk/changelog.txt)
