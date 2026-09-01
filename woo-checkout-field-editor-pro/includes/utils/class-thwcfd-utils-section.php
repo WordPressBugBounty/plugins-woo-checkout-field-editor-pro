@@ -276,7 +276,25 @@ class THWCFD_Utils_Section {
 	    }
 	    return ($a->get_property('order') < $b->get_property('order')) ? -1 : 1;
 	}
-	
+
+	/**
+	 * Resolve a fallback country code to use when a country field is hidden by
+	 * conditional logic but must still be supplied to payment gateways.
+	 * Order of preference: customer session value, then store base country.
+	 */
+	public static function resolve_hidden_country_value($key){
+		$value = '';
+		if(function_exists('WC') && WC()->customer){
+			$value = ('shipping_country' === $key)
+				? WC()->customer->get_shipping_country()
+				: WC()->customer->get_billing_country();
+		}
+		if(!$value && function_exists('WC') && WC()->countries){
+			$value = WC()->countries->get_base_country();
+		}
+		return apply_filters('thwcfd_hidden_country_field_value', $value, $key);
+	}
+
 }
 
 endif;

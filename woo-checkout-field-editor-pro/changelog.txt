@@ -1,4 +1,9 @@
 == Changelog ==
+= 2.2.0=
+* Added WooCommerce 11.0 compatibility.
+* Added WordPress 7.1 compatibility.
+* Fixed Stripe optimized checkout failing when billing country disabled.
+
 = 2.1.9 =
 * Added new Block Checkout field types: **Number, URL, Email, Paragraph, Textarea, and Heading** .
 * Added WooCommerce 10.8 compatibility.

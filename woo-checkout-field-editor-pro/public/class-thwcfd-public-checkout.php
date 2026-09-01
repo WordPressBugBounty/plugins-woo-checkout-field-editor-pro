@@ -80,16 +80,26 @@ class THWCFD_Public_Checkout {
 		add_filter('woocommerce_form_field_heading', array($this, 'woo_form_field_heading'), 10, 4);
 		add_filter('woocommerce_form_field_paragraph', array($this, 'woo_form_field_paragraph'), 10, 4);
 
+		//Compat: keep a billing/shipping country value available on classic checkout
+		//when the country field is hidden, so payment gateways that read
+		//#billing_country from the DOM (e.g. WooCommerce Stripe) keep working.
+		if(apply_filters('thwcfd_preserve_hidden_country_field', false)){
+			add_action('woocommerce_review_order_before_payment', array($this, 'thwcfd_output_hidden_country_inputs'), 5);
+			add_action('woocommerce_checkout_init', array($this, 'thwcfd_seed_customer_country'));
+			add_action('woocommerce_checkout_create_order', array($this, 'thwcfd_stamp_order_country'), 10, 2);
+			add_filter('wc_stripe_upe_params', array($this, 'thwcfd_stripe_mark_country_supplied'));
+		}
+
 		//Radio field required indicator fix
 		if(version_compare(THWCFD_Utils::get_wc_version(), '9.7.0', ">=")){
 			add_filter('woocommerce_form_field_radio', array($this, 'woo_form_field_radio'), 10, 4);
 		}
-		//Fix - `Hide shipping costs until an address is entered` options enabled shipping calculation not working from WC 9.8+ version 
+		//Fix - `Hide shipping costs until an address is entered` options enabled shipping calculation not working from WC 9.8+ version
 		if(version_compare(THWCFD_Utils::get_wc_version(), '9.8.0', ">=")){
 			add_filter('woocommerce_get_country_locale', array($this, 'modify_address_fields'),9);
 			add_filter('woocommerce_get_country_locale_default', array($this, 'make_address_fields_default'),9);
 		}
-		
+
 	}
 
 	/**
@@ -780,6 +790,102 @@ class THWCFD_Public_Checkout {
 	----- Display Field Values - END --------
 	*****************************************/
 
+
+	/***********************************************************
+	******** HIDDEN COUNTRY FIELD GATEWAY COMPAT - START ******
+	***********************************************************/
+
+	/**
+	 * True when the given country field is NOT part of the rendered checkout
+	 * fields (i.e. it has been hidden/removed by field configuration).
+	 */
+	private function thwcfd_is_country_field_hidden($section){
+		if(!function_exists('WC') || !WC()->checkout()){
+			return false;
+		}
+		$fields = WC()->checkout()->get_checkout_fields($section);
+		return !isset($fields[$section . '_country']);
+	}
+
+	/**
+	 * Output a hidden #billing_country / #shipping_country input carrying a
+	 * resolved value when the visible country field has been removed, so the
+	 * value is present in the DOM for JS-based payment gateways.
+	 */
+	public function thwcfd_output_hidden_country_inputs(){
+		if(!function_exists('is_checkout') || !is_checkout() || is_wc_endpoint_url()){
+			return;
+		}
+
+		$sections = array('billing');
+		if(function_exists('WC') && WC()->cart && WC()->cart->needs_shipping_address()){
+			$sections[] = 'shipping';
+		}
+
+		foreach($sections as $section){
+			if(!$this->thwcfd_is_country_field_hidden($section)){
+				continue;
+			}
+			$key   = $section . '_country';
+			$value = THWCFD_Utils_Section::resolve_hidden_country_value($key);
+			if($value){
+				printf('<input type="hidden" id="%1$s" name="%1$s" value="%2$s" class="thwcfd-hidden-country" />',
+					esc_attr($key), esc_attr($value));
+			}
+		}
+	}
+
+	/**
+	 * Seed the customer session with a country when the field is hidden, so the
+	 * gateway's own fallback paths and country-based logic have a value.
+	 */
+	public function thwcfd_seed_customer_country(){
+		if(!function_exists('WC') || !WC()->customer){
+			return;
+		}
+		if($this->thwcfd_is_country_field_hidden('billing') && !WC()->customer->get_billing_country()){
+			WC()->customer->set_billing_country(THWCFD_Utils_Section::resolve_hidden_country_value('billing_country'));
+		}
+		if(WC()->cart && WC()->cart->needs_shipping_address()
+			&& $this->thwcfd_is_country_field_hidden('shipping') && !WC()->customer->get_shipping_country()){
+			WC()->customer->set_shipping_country(THWCFD_Utils_Section::resolve_hidden_country_value('shipping_country'));
+		}
+	}
+
+	/**
+	 * Ensure the order records a country even though the field was hidden
+	 * (WooCommerce skips posted values for fields it no longer knows about).
+	 */
+	public function thwcfd_stamp_order_country($order, $data = array()){
+		if(!$order->get_billing_country()){
+			$posted = isset($_POST['billing_country']) ? wc_clean(wp_unslash($_POST['billing_country'])) : '';
+			$order->set_billing_country($posted ? $posted : THWCFD_Utils_Section::resolve_hidden_country_value('billing_country'));
+		}
+		if(function_exists('WC') && WC()->cart && WC()->cart->needs_shipping_address() && !$order->get_shipping_country()){
+			$posted = isset($_POST['shipping_country']) ? wc_clean(wp_unslash($_POST['shipping_country'])) : '';
+			$order->set_shipping_country($posted ? $posted : THWCFD_Utils_Section::resolve_hidden_country_value('shipping_country'));
+		}
+	}
+
+	/**
+	 * Tell the WooCommerce Stripe Payment Element that the merchant is supplying
+	 * billing_country itself, so Stripe neither collects it in the widget nor
+	 * warns about double-collecting it.
+	 */
+	public function thwcfd_stripe_mark_country_supplied($params){
+		if(!isset($params['enabledBillingFields']) || !is_array($params['enabledBillingFields'])){
+			$params['enabledBillingFields'] = array();
+		}
+		if($this->thwcfd_is_country_field_hidden('billing')
+			&& !in_array('billing_country', $params['enabledBillingFields'], true)){
+			$params['enabledBillingFields'][] = 'billing_country';
+		}
+		return $params;
+	}
+
+	/***********************************************************
+	******** HIDDEN COUNTRY FIELD GATEWAY COMPAT - End ********
+	***********************************************************/
 
 	public function woo_form_field($field, $key, $args, $value = null){
 

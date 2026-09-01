@@ -2,10 +2,10 @@
 Contributors: ThemeHigh
 Donate link: https://themehigh.com/
 Tags: Checkout  Manager, Checkout Field Editor, WooCommerce Checkout, WooCommerce Checkout Field, Custom fields
-Requires at least: 4.9
-Tested up to: 7.0
+Requires at least: 5.0
+Tested up to: 7.1
 Requires PHP: 5.6
-Stable tag: 2.1.9
+Stable tag: 2.2.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -66,12 +66,18 @@ The default WooCommerce checkout field editor offers only basic fields, limiting
 	19. Heading
     20. Paragraph
 
-👉 Also the users can add 4 checkout field types to gather more customer information using **Block checkout**.
+👉 Also the users can add 10 checkout field types to gather more customer information using **Block checkout**.
 
     1.  Text
-    2.  Select
-    3.  Radio
-    4.  Checkbox
+    2.  Number
+    3.  Textarea
+    4.  Select
+    5.  Radio
+    6.  Checkbox
+    7.  Email
+    8.  URL
+    9.  Paragraph
+    10. Heading
 
 Users can **edit, delete and enable/disable these fields**. With the simple drag-and-drop interface, users can also easily **reposition fields** to meet their business needs effortlessly.
 
@@ -346,6 +352,12 @@ No, the free version does not support this feature. However, with the pro versio
 12. Block checkout custom fields( Radio and Text)
 
 == Changelog ==
+
+= 2.2.0=
+* Added WooCommerce 11.0 compatibility.
+* Added WordPress 7.1 compatibility.
+* Fixed Stripe optimized checkout failing when billing country disabled.
+
 = 2.1.9 =
 * Added new Block Checkout field types: **Number, URL, Email, Paragraph, Textarea, and Heading** .
 * Added WooCommerce 10.8 compatibility.
